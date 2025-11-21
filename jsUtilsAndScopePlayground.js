@@ -165,5 +165,5 @@ var declarations are hoisted and start as undefined, so we can access them befor
 let and const are hoisted too, but they’re in a “temporal dead zone” until their declaration, and using them early gives a ReferenceError.
 Function declarations are fully hoisted, so we can call them before they appear in the code.
 Function expressions with var are hoisted as undefined, and calling them before assignment causes a TypeError.
-Function expressions with let or const behave like let/const variables and give a ReferenceError if used before declarationn.
+Function expressions with let or const behave like let/const variables and give a ReferenceError if used before declaration.
 */
