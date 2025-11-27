@@ -126,44 +126,105 @@ console.log("globalVar:", globalVar);
 // Part C: Hoisting & Temporal Dead Zone (TDZ)
 /////////////////////////////////////////////
 
-console.log("Variable Hoisting");
+console.log("\n /// Variable Hoisting ///");
 
-// VAR: hoisted and initialized as undefined
-console.log("varVar before declaration:", varVar); // undefined
-var varVar = 10;
-console.log("varVar after declaration:", varVar); // 10
-
-// LET: hoisted but in TDZ → ReferenceError if accessed before declaration
-let letVar = 20;
-console.log("letVar after declaration:", letVar); // 20
-
-// CONST: hoisted but in TDZ → ReferenceError if accessed before declaration
-const constVar = 30;
-console.log("constVar after declaration:", constVar); // 30
-
-console.log("\n Function Hoisting");
-
-// Function declaration: hoisted, can call before declaration
-console.log("sum(2,3) before declaration:", sum(2, 3)); // 5
-function sum(a, b) {
-  return a + b;
+// VAR: Hoisted and initialized as undefined 
+try {
+  console.log("varVar before declaration:", varVar); // undefined
+} catch (error) {
+  console.log("varVar before declaration threw:", error.name);
 }
 
-// Function expression with var: var is hoisted as undefined : TypeError if called before assignment
-var multiply = function (a, b) {
+var varVar = 10;
+console.log("varVar after declaration:", varVar);
+console.log("\n");
+
+// LET: Hoisted but in TDZ (ReferenceError)
+try {
+  console.log("letVar before declaration:", letVar);
+} catch (error) {
+  console.log("letVar before declaration threw:", error.name); // ReferenceError
+}
+
+let letVar = 20;
+console.log("letVar after declaration:", letVar);
+console.log("\n");
+
+// CONST: Hoisted but in TDZ (ReferenceError)
+try {
+  console.log("constVar before declaration:", constVar);
+} catch (error) {
+  console.log("constVar before declaration threw:", error.name); // ReferenceError
+}
+
+const constVar = 30;
+console.log("constVar after declaration:", constVar);
+console.log("\n");
+
+
+console.log("/// Function Hoisting ///");
+
+// Function declaration: fully hoisted
+try {
+  console.log("sumBefore(2,3) before declaration:", sumBefore(2, 3));
+} catch (error) {
+  console.log("sumBefore before declaration threw:", error.name);
+}
+
+function sumBefore(a, b) {
+  return a + b;
+}
+console.log("sumBefore after declaration:", sumBefore(2, 3));
+console.log("\n");
+
+
+// Function expression with var: var hoisted as undefined  TypeError
+try {
+  console.log("multiplyBefore(2,3) before declaration:", multiplyBefore(2, 3));
+} catch (error) {
+  console.log("multiplyBefore before declaration threw:", error.name); // TypeError
+}
+
+var multiplyBefore = function (a, b) {
   return a * b;
 };
-console.log("multiply(2,3) after declaration:", multiply(2, 3)); // 6
 
-// Function expression with let/const: not hoisted (TDZ) → ReferenceError if called before declaration
-const divide = (a, b) => a / b;
-console.log("divide(6,2) after declaration:", divide(6, 2)); // 3
+console.log("multiplyBefore after declaration:", multiplyBefore(2, 3));
+console.log("\n");
 
-//Summary
+
+// Function expression with let: in TDZ ReferenceError
+try {
+  console.log("subtractBefore(5,2) before declaration:", subtractBefore(5, 2));
+} catch (error) {
+  console.log("subtractBefore before declaration threw:", error.name); // ReferenceError
+}
+
+let subtractBefore = (a, b) => a - b;
+
+console.log("subtractBefore after declaration:", subtractBefore(5, 2));
+console.log("\n");
+
+
+// Function expression with const: in TDZ ReferenceError
+try {
+  console.log("divideBefore(6,2) before declaration:", divideBefore(6, 2));
+} catch (error) {
+  console.log("divideBefore before declaration threw:", error.name); // ReferenceError
+}
+
+const divideBefore = (a, b) => a / b;
+
+console.log("divideBefore after declaration:", divideBefore(6, 2));
+console.log("\n");
+
+
+// SUMMARY
 /*
-var declarations are hoisted and start as undefined, so we can access them before the line, but the value is undefined.
-let and const are hoisted too, but they’re in a “temporal dead zone” until their declaration, and using them early gives a ReferenceError.
-Function declarations are fully hoisted, so we can call them before they appear in the code.
-Function expressions with var are hoisted as undefined, and calling them before assignment causes a TypeError.
-Function expressions with let or const behave like let/const variables and give a ReferenceError if used before declaration.
+var → hoisted, initialized to undefined, so no error before declaration.
+let → hoisted but in TDZ → accessing early throws ReferenceError.
+const → same as let, but must be assigned at declaration → ReferenceError.
+Function declarations → fully hoisted → can be called before declaration.
+Function expressions with var → var hoisted as undefined → calling gives TypeError.
+Function expressions with let/const → TDZ → ReferenceError before declaration.
 */
